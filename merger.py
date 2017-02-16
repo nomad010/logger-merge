@@ -6,6 +6,7 @@ import sys
 
 pinfo = parserinfo(dayfirst=False)
 
+
 class FileIterator(object):
     def _find_datetime(self):
         bracketing_re = r'(?=\[(?P<date>.*?)\])'
@@ -15,7 +16,7 @@ class FileIterator(object):
                 new_date = parse(match.group('date'), pinfo, fuzzy=True)
                 self.datetime = new_date
                 break
-            except Exception as e:
+            except:
                 pass
 
     def _read(self):
@@ -37,7 +38,7 @@ class FileIterator(object):
         if self.name:
             result = '[{}] '.format(self.name) + self.line
         else:
-            result = line
+            result = self.line
         self._read()
         return result
 
