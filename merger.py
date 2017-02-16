@@ -2,6 +2,7 @@ import os
 import re
 import datetime
 from dateutil.parser import parserinfo, parse
+import sys
 
 pinfo = parserinfo(dayfirst=False)
 
@@ -33,7 +34,10 @@ class FileIterator(object):
         self._read()
 
     def next(self):
-        result = '[{}] '.format(self.name) + self.line
+        if self.name:
+            result = '[{}] '.format(self.name) + self.line
+        else:
+            result = line
         self._read()
         return result
 
@@ -59,8 +63,6 @@ def merge(*iterables):
             usable_iterables.pop(idx)
 
 
-f = FileIterator('t1.txt', name='a')
-g = FileIterator('t2.txt', name='b')
-
-for i in merge(f, g):
-    print i,
+files = sys.argv[1:]
+iterators = map(FileIterator, files)
+sys.stdout.writelines(merge(*iterators))
